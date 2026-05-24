@@ -60,7 +60,7 @@ export default function TryoutForm() {
     <div className="page">
       <div style={{ maxWidth: '520px', width: '100%' }}>
         <div style={{ marginBottom: '36px', animation: 'slideUp 0.4s ease' }}>
-          <span style={eyebrow}>CARACALS / 2026</span>
+          <span style={eyebrow}>IZTECH CARACALS / 2026</span>
           <h2 style={{ fontSize: '2.8rem', color: '#e0e0e0', letterSpacing: '4px', marginBottom: 0 }}>
             Freshman Formu
           </h2>
