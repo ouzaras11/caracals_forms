@@ -20,8 +20,8 @@ IZTECH (İzmir Yüksek Teknoloji Enstitüsü) Amerikan Futbolu takımı için ö
 ## Kurulum
 
 ```bash
-git clone <repo-url>
-cd caracals-forms
+git clone https://github.com/ouzaras11/caracals_forms.git
+cd caracals_forms
 npm install
 cp .env.example .env   # .env içindeki değerleri doldur
 npm run dev
