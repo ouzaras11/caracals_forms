@@ -1,0 +1,28 @@
+# Node
+node_modules/
+
+# Environment variables — Supabase keys, admin password — ASLA commit etme
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite build output
+dist/
+*.local
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Deploy platforms
+.vercel/
+.netlify/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
