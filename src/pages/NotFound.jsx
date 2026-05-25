@@ -3,7 +3,7 @@ export default function NotFound() {
     <div style={styles.wrap}>
       <span style={styles.code}>404</span>
       <div style={styles.line} />
-      <p style={styles.msg}>Bu sayfa mevcut değil.</p>
+      <p style={styles.msg}>Bu sayfa mevcut değil. Lütfen doğru adresi girdiğinizden emin olun.</p>
     </div>
   )
 }
@@ -33,7 +33,7 @@ const styles = {
     fontFamily: "'Barlow Condensed', sans-serif",
     fontSize: '1rem',
     color: '#555',
-    letterSpacing: '3px',
-    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    textAlign: 'center',
   },
 }

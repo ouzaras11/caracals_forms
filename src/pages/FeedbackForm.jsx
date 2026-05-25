@@ -37,10 +37,6 @@ export default function FeedbackForm() {
             <div className="success-icon">✅</div>
             <h2>Mesajın İletildi!</h2>
             <p>Geri bildirimin anonim olarak kaydedildi. Teşekkürler!</p>
-            <button className="btn btn-primary"
-              onClick={() => { setKategori(''); setMesaj(''); setSuccess(false) }}>
-              Yeni Mesaj
-            </button>
           </div>
         </div>
       </div>
@@ -53,7 +49,7 @@ export default function FeedbackForm() {
         <div style={{ marginBottom: '36px', animation: 'slideUp 0.4s ease' }}>
           <span style={eyebrow}>Anonim</span>
           <h2 style={{ fontSize: '2.8rem', color: '#e0e0e0', letterSpacing: '4px', marginBottom: 0 }}>
-            Öneri Kutusu
+            Feedback Kutusu
           </h2>
           <div style={{ width: '40px', height: '3px', background: '#CC2222', marginTop: '12px' }} />
         </div>
@@ -85,7 +81,7 @@ export default function FeedbackForm() {
 
             <button className="btn btn-primary" type="submit" disabled={loading}
               style={{ marginTop: '8px' }}>
-              {loading ? 'Gönderiliyor...' : 'Anonim Gönder'}
+              {loading ? 'Gönderiliyor...' : 'Gönder'}
             </button>
           </form>
         </div>
