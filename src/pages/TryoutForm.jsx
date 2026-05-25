@@ -27,6 +27,17 @@ export default function TryoutForm() {
     const empty = Object.values(form).some(v => !v.trim())
     if (empty) { setError('Lütfen tüm alanları doldurun.'); return }
 
+    if (form.ad_soyad.trim().length > 50) { setError('Ad soyad en fazla 50 karakter olabilir.'); return }
+
+    const tel = form.telefon.trim()
+    if (!/^\d+$/.test(tel)) { setError('Telefon numarası yalnızca rakam içermelidir.'); return }
+    if (tel.startsWith('0')) { setError('Telefon numarası 0 ile başlayamaz.'); return }
+    if (tel.length !== 10) { setError('Telefon numarası 10 haneli olmalıdır.'); return }
+
+    const ogrNo = form.ogrenci_no.trim()
+    if (!/^\d+$/.test(ogrNo)) { setError('Öğrenci numarası yalnızca rakam içermelidir.'); return }
+    if (ogrNo.length !== 9) { setError('Öğrenci numarası 9 haneli olmalıdır.'); return }
+
     if (!supabase) { setError('Supabase bağlantısı henüz yapılandırılmadı.'); return }
 
     setLoading(true)
@@ -72,19 +83,19 @@ export default function TryoutForm() {
             <div className="form-group">
               <label htmlFor="ad_soyad">Ad Soyad</label>
               <input id="ad_soyad" name="ad_soyad" type="text"
-                placeholder="Adınız ve soyadınız" value={form.ad_soyad} onChange={handleChange} />
+                placeholder="Adınız ve soyadınız" value={form.ad_soyad} onChange={handleChange} maxLength={50} />
             </div>
 
             <div className="form-group">
               <label htmlFor="telefon">Telefon Numarası</label>
               <input id="telefon" name="telefon" type="tel"
-                placeholder="5XX XXX XX XX" value={form.telefon} onChange={handleChange} />
+                placeholder="5XX XXX XX XX" value={form.telefon} onChange={handleChange} maxLength={10} inputMode="numeric" />
             </div>
 
             <div className="form-group">
               <label htmlFor="ogrenci_no">Öğrenci Numarası</label>
               <input id="ogrenci_no" name="ogrenci_no" type="text"
-                placeholder="Öğrenci numaranız" value={form.ogrenci_no} onChange={handleChange} />
+                placeholder="Öğrenci numaranız" value={form.ogrenci_no} onChange={handleChange} maxLength={9} inputMode="numeric" />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '16px' }}>
