@@ -10,14 +10,33 @@ const INITIAL = {
   sinif_bolum: '',
 }
 
+function validateTelefon(val) {
+  if (!val) return ''
+  if (!/^\d+$/.test(val)) return 'Yalnızca rakam giriniz.'
+  if (val.startsWith('0')) return '0 ile başlayamaz.'
+  if (val.length < 10) return '10 haneli olmalıdır.'
+  return ''
+}
+
+function validateOgrenciNo(val) {
+  if (!val) return ''
+  if (!/^\d+$/.test(val)) return 'Yalnızca rakam giriniz.'
+  if (val.length < 9) return '9 haneli olmalıdır.'
+  return ''
+}
+
 export default function TryoutForm() {
   const [form, setForm] = useState(INITIAL)
+  const [fieldErrors, setFieldErrors] = useState({ telefon: '', ogrenci_no: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
   function handleChange(e) {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+    if (name === 'telefon') setFieldErrors(prev => ({ ...prev, telefon: validateTelefon(value) }))
+    if (name === 'ogrenci_no') setFieldErrors(prev => ({ ...prev, ogrenci_no: validateOgrenciNo(value) }))
   }
 
   async function handleSubmit(e) {
@@ -29,14 +48,7 @@ export default function TryoutForm() {
 
     if (form.ad_soyad.trim().length > 50) { setError('Ad soyad en fazla 50 karakter olabilir.'); return }
 
-    const tel = form.telefon.trim()
-    if (!/^\d+$/.test(tel)) { setError('Telefon numarası yalnızca rakam içermelidir.'); return }
-    if (tel.startsWith('0')) { setError('Telefon numarası 0 ile başlayamaz.'); return }
-    if (tel.length !== 10) { setError('Telefon numarası 10 haneli olmalıdır.'); return }
-
-    const ogrNo = form.ogrenci_no.trim()
-    if (!/^\d+$/.test(ogrNo)) { setError('Öğrenci numarası yalnızca rakam içermelidir.'); return }
-    if (ogrNo.length !== 9) { setError('Öğrenci numarası 9 haneli olmalıdır.'); return }
+    if (fieldErrors.telefon || fieldErrors.ogrenci_no) { setError('Lütfen hatalı alanları düzeltin.'); return }
 
     if (!supabase) { setError('Supabase bağlantısı henüz yapılandırılmadı.'); return }
 
@@ -90,12 +102,14 @@ export default function TryoutForm() {
               <label htmlFor="telefon">Telefon Numarası</label>
               <input id="telefon" name="telefon" type="tel"
                 placeholder="5XX XXX XX XX" value={form.telefon} onChange={handleChange} maxLength={10} inputMode="numeric" />
+              {fieldErrors.telefon && <p style={inlineError}>{fieldErrors.telefon}</p>}
             </div>
 
             <div className="form-group">
               <label htmlFor="ogrenci_no">Öğrenci Numarası</label>
               <input id="ogrenci_no" name="ogrenci_no" type="text"
                 placeholder="Öğrenci numaranız" value={form.ogrenci_no} onChange={handleChange} maxLength={9} inputMode="numeric" />
+              {fieldErrors.ogrenci_no && <p style={inlineError}>{fieldErrors.ogrenci_no}</p>}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '16px' }}>
@@ -144,4 +158,12 @@ const eyebrow = {
   textTransform: 'uppercase',
   display: 'block',
   marginBottom: '8px',
+}
+
+const inlineError = {
+  color: '#CC2222',
+  fontSize: '0.8rem',
+  fontFamily: "'Barlow Condensed', sans-serif",
+  marginTop: '4px',
+  letterSpacing: '0.5px',
 }
