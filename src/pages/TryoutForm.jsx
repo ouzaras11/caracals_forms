@@ -59,6 +59,12 @@ function blockNonDigit(e) {
 
 export default function TryoutForm() {
   const [form, setForm] = useState(INITIAL)
+  const [honeypot, setHoneypot] = useState('')
+  const [alreadySubmitted, setAlreadySubmitted] = useState(() => {
+    const ts = localStorage.getItem('caracals_submitted_at')
+    if (!ts) return false
+    return Date.now() - Number(ts) < 24 * 60 * 60 * 1000
+  })
   const [fieldErrors, setFieldErrors] = useState({ ad_soyad: '', telefon: '', ogrenci_no: '', sinif_bolum: '' })
   const [submitErrors, setSubmitErrors] = useState({ boy: '', kilo: '' })
   const [submitAttempted, setSubmitAttempted] = useState(false)
@@ -68,7 +74,7 @@ export default function TryoutForm() {
 
   function handleChange(e) {
     const { name, value } = e.target
-    const val = (name === 'boy' || name === 'kilo') ? value.replace(/\D/g, '') : value
+    const val = (name === 'boy' || name === 'kilo' || name === 'telefon' || name === 'ogrenci_no') ? value.replace(/\D/g, '') : value
     setForm(prev => ({ ...prev, [name]: val }))
     if (name === 'ad_soyad') setFieldErrors(prev => ({ ...prev, ad_soyad: validateAdSoyad(val) }))
     if (name === 'telefon') setFieldErrors(prev => ({ ...prev, telefon: validateTelefon(val) }))
@@ -100,6 +106,8 @@ export default function TryoutForm() {
     setSubmitErrors({ boy: boyErr, kilo: kiloErr })
     if (boyErr || kiloErr) return
 
+    if (honeypot) { setSuccess(true); return }
+
     if (!supabase) { setError('Supabase bağlantısı henüz yapılandırılmadı.'); return }
 
     setLoading(true)
@@ -109,7 +117,22 @@ export default function TryoutForm() {
     setLoading(false)
 
     if (err) { setError('Bir hata oluştu, tekrar deneyin.'); return }
+    localStorage.setItem('caracals_submitted_at', String(Date.now()))
     setSuccess(true)
+  }
+
+  if (alreadySubmitted) {
+    return (
+      <div className="page">
+        <div className="card">
+          <div className="success-box">
+            <div className="success-icon">🏈</div>
+            <h2>Zaten Başvurdun!</h2>
+            <p>Bu tarayıcıdan daha önce başvuru yapıldı.</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (success) {
@@ -139,6 +162,16 @@ export default function TryoutForm() {
 
         <div className="card" style={{ maxWidth: 'none', animationDelay: '0.1s', animationFillMode: 'both' }}>
           <form onSubmit={handleSubmit} noValidate>
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={e => setHoneypot(e.target.value)}
+              style={{ position: 'absolute', opacity: 0, top: 0, left: 0, width: 0, height: 0, pointerEvents: 'none' }}
+              aria-hidden="true"
+              tabIndex={-1}
+              autoComplete="off"
+            />
             <div className="form-group">
               <label htmlFor="ad_soyad">Ad Soyad</label>
               <input id="ad_soyad" name="ad_soyad" type="text"
