@@ -14,14 +14,14 @@ function validateTelefon(val) {
   if (!val) return ''
   if (!/^\d+$/.test(val)) return 'Yalnızca rakam giriniz.'
   if (val.startsWith('0')) return '0 ile başlayamaz.'
-  if (val.length < 10) return '10 haneli olmalıdır.'
+  if (val.length > 10) return 'Telefon numarası 10 haneli olmalıdır.'
   return ''
 }
 
 function validateOgrenciNo(val) {
   if (!val) return ''
   if (!/^\d+$/.test(val)) return 'Yalnızca rakam giriniz.'
-  if (val.length < 9) return '9 haneli olmalıdır.'
+  if (val.length > 9) return 'Öğrenci numarası 9 haneli olmalıdır.'
   return ''
 }
 
@@ -69,10 +69,7 @@ export default function TryoutForm() {
           <div className="success-box">
             <div className="success-icon">🏈</div>
             <h2>Başvurun Alındı!</h2>
-            <p>Seçme günü sana ulaşacağız. Hazır ol!</p>
-            <button className="btn btn-primary" onClick={() => { setForm(INITIAL); setSuccess(false) }}>
-              Yeni Başvuru
-            </button>
+            <p>İletişim için Whatsapp grubunu takipte kal.</p>
           </div>
         </div>
       </div>
@@ -101,14 +98,14 @@ export default function TryoutForm() {
             <div className="form-group">
               <label htmlFor="telefon">Telefon Numarası</label>
               <input id="telefon" name="telefon" type="tel"
-                placeholder="5XX XXX XX XX" value={form.telefon} onChange={handleChange} maxLength={10} inputMode="numeric" />
+                placeholder="5XX XXX XX XX" value={form.telefon} onChange={handleChange} inputMode="numeric" />
               {fieldErrors.telefon && <p style={inlineError}>{fieldErrors.telefon}</p>}
             </div>
 
             <div className="form-group">
               <label htmlFor="ogrenci_no">Öğrenci Numarası</label>
               <input id="ogrenci_no" name="ogrenci_no" type="text"
-                placeholder="Öğrenci numaranız" value={form.ogrenci_no} onChange={handleChange} maxLength={9} inputMode="numeric" />
+                placeholder="Öğrenci numaranız" value={form.ogrenci_no} onChange={handleChange} inputMode="numeric" />
               {fieldErrors.ogrenci_no && <p style={inlineError}>{fieldErrors.ogrenci_no}</p>}
             </div>
 
